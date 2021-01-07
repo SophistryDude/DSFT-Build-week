@@ -8,7 +8,7 @@ MIGRATE = Migrate()
 
 
 class User(DB.model):
-    """Twitter users corresponding to tweets"""
+    """users corresponding to tweets"""
     id = DB.column(DB.BigInteger, primary_key=True)
     name = DB.column(DB.String, nullable=False)
     SongSuggestion = DB.Column(DB.BigInteger)

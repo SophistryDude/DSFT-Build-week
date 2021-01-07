@@ -3,7 +3,8 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
 
 # Imports from this application
 from app import create_app, server
@@ -48,7 +49,25 @@ footer = dbc.Container(
 # dcc.Location: https://dash.plot.ly/dash-core-components/location
 # dbc.Container: https://dash-bootstrap-components.opensource.faculty.ai/l/components/layout
 app.layout = html.Div([
+    cdd.Store(id='session', storage_type='session')
     dcc.Location(id='url', refresh=False), 
+    html.Table([
+        html.Thead([
+            html.Tr(html.Th('Click to store in:', colSpan="1")),
+            html.Tr([
+                html.Th(html.Button('sessionStorage', id='session-button'))
+            ]),
+            html.Tr([
+                html.Th('Session clicks')
+            ])
+        ]),
+        html.Tbody([
+            html.Tr([
+                html.Td(0, id='session-clicks')
+            ])
+        ])
+    ])
+])
     navbar, 
     dbc.Container(id='page-content', className='mt-4'), 
     html.Hr(), 
