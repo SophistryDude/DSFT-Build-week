@@ -1,8 +1,8 @@
 """main app for routing file for Twitoff"""
 
 from os import getenv
-from .spotify import DB, User, Tweet, insert_example_users, insert_example_tweets, MIGRATE
-from .username import 
+from models import DB, User, MIGRATE
+#from .username import 
 import dash
 import dash_bootstrap_components as dbc
 
@@ -20,7 +20,6 @@ def create_app():
     app = dash.Dash(__name__, external_stylesheets=external_stylesheets, meta_tags=meta_tags)
     app.config.suppress_callback_exceptions = True # see https://dash.plot.ly/urls
     app.title = 'Spotify Song Prediction' # appears in browser title bar
-    server = app.server
     DB.init_app(app)
     MIGRATE.init_app(app, DB)
 

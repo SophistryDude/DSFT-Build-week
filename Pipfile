@@ -11,6 +11,8 @@ dash-bootstrap-components = "*"
 gunicorn = "*"
 plotly = "*"
 pandas = "*"
-
+spotipy = "*"
+flask = "*"
+flask_sqlalchemy = "*"
 [requires]
 python_version = "3"

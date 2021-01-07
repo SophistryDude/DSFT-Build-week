@@ -26,34 +26,63 @@ column1 = dbc.Col(
     ],
     md=6,
 )
-
+@app.callback(
+    Output(component_id='my-div', component_property='children'), 
+    [Input(component_id='my-id', component_property='value')]
+)
+def update_output_div(input_value):
+    track_id = input_value
+    return 
 input_types = ['text']
 column2 = dbc.Col(
     [
         html.H2('Your next favorite song', className='mb-5'),
-        html.Label('Input your track ID:  '),
-        dcc.Input(
-            placeholder = 'Track ID',
+        html.Div([
+            dcc.input(
+                id='my_{}'.format(x),
+                type=x,
+                placeholder="insert{}".format(x),
+            ) for x in input_types
+            html.Label('Input your track ID: '),
+            dcc.Input(
+            id = 'Track ID',
             type = 'text',
-            value = ''
-        )
-        # html.Div([
-        #     dcc.input(
-        #         id='my_{}'.format(x),
-        #         type=x,
-        #         placeholder="insert{}".format(x),
-        #     ) for x in input_types
+            placeholder='Track ID',
+            html.Br(),
+            html.Button('Submit', id='btn-submit'),
+            html.Div(id='output-submit'),
+            html.Hr()
 
     ]
 )
 
-# ["Input: ", dcc.Input(id='my-input', value='initial value', type='text')]
+["Input: ", dcc.Input(id='Track ID', value='initial value', type='text')]
 
 layout = dbc.Row([column1, column2])
 
 
-# # 1:07:29 in the unit 2 build 3 dash inputs and outputs video
-# @app.callback(
-#     Output(''),
-#     Input(component_id='my-input', component_property='value')
-# )
+@app.callback(Output('output-submit', 'children'),
+             [Input('btn-submit', 'n_submit')]
+
+)
+
+#Stuff I'm working on
+
+for store in ('session'):
+    @app.callback(Output(store, 'data'),
+                  Input('{}-button'.format(store), 'n_clicks'),
+                  State(store, 'data'))
+    def on_click(n_clicks, data):
+        if n_clicks is None:
+            raise PreventUpdate
+        data = data or {'clicks': 0}
+        data['clicks'] = data['clicks'] + 1
+        return data
+    @app.callback(Output('{}-clicks'.format(store), 'children'),
+                  Input(store, 'modified_timestamp'),
+                  State(store, 'data'))
+    def on_data(ts, data):
+        if ts is None:
+            raise PreventUpdate
+        data = data or {}
+        return data.get('clicks', 0)
